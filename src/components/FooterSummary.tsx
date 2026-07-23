@@ -1,5 +1,5 @@
-import React from 'react';
-import { UtensilsCrossed, MapPin, Phone, Mail, Clock, Award, ArrowUp, Wine, Building2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { UtensilsCrossed, MapPin, Phone, Mail, Clock, Award, ArrowUp, Wine, Building2, Sparkles, CheckCircle2 } from 'lucide-react';
 import { RESTAURANT_INFO } from '../data/restaurantData';
 import { ActivePageView } from '../types';
 
@@ -12,6 +12,16 @@ export const FooterSummary: React.FC<FooterSummaryProps> = ({
   onOpenReservation,
   onNavigatePage,
 }) => {
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [newsletterSubscribed, setNewsletterSubscribed] = useState(false);
+  const [selectedPreference, setSelectedPreference] = useState<'all' | 'menus' | 'wine'>('all');
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newsletterEmail || !newsletterEmail.includes('@')) return;
+    setNewsletterSubscribed(true);
+  };
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -61,6 +71,94 @@ export const FooterSummary: React.FC<FooterSummaryProps> = ({
             >
               <ArrowUp className="w-4 h-4 text-[#C5A059]" />
             </button>
+          </div>
+        </div>
+
+        {/* Culinary Newsletter Subscription Section */}
+        <div className="p-8 bg-[#141414] border border-[#C5A059]/30 shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-[#C5A059]/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            <div className="lg:col-span-6 space-y-2">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#0F0F0F] border border-[#C5A059]/40 text-[#C5A059] text-[10px] font-semibold uppercase tracking-[0.2em]">
+                <Mail className="w-3.5 h-3.5" />
+                <span>Culinary Gazette & Dispatches</span>
+              </div>
+              <h3 className="font-serif text-2xl font-normal text-[#E5E5E5]">
+                Subscribe to L'Artisan Culinary Newsletter
+              </h3>
+              <p className="text-stone-400 text-xs leading-relaxed max-w-xl">
+                Be the first to receive updates on seasonal menu debuts, rare sommelier cellar allocation releases, and exclusive hearth dinner invitations.
+              </p>
+            </div>
+
+            <div className="lg:col-span-6">
+              {newsletterSubscribed ? (
+                <div className="p-4 bg-[#0F0F0F] border border-[#C5A059] flex items-center gap-3 text-xs text-stone-200">
+                  <CheckCircle2 className="w-5 h-5 text-[#C5A059] shrink-0" />
+                  <div>
+                    <span className="font-bold text-[#C5A059] block">Subscription Confirmed</span>
+                    <span className="text-stone-400 text-[11px]">
+                      Thank you! Welcome dispatches will be sent to <strong className="text-stone-200">{newsletterEmail}</strong>.
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <form onSubmit={handleSubscribe} className="space-y-3">
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <input
+                      type="email"
+                      required
+                      placeholder="Enter your email address..."
+                      value={newsletterEmail}
+                      onChange={(e) => setNewsletterEmail(e.target.value)}
+                      className="flex-1 px-4 py-3 bg-[#0F0F0F] border border-white/10 text-stone-200 text-xs focus:outline-none focus:border-[#C5A059] placeholder:text-stone-600"
+                    />
+                    <button
+                      type="submit"
+                      className="px-6 py-3 bg-[#C5A059] text-black text-xs font-bold uppercase tracking-[0.2em] hover:bg-amber-400 transition-all cursor-pointer flex items-center justify-center gap-2 shrink-0 shadow-lg"
+                    >
+                      <span>Subscribe</span>
+                      <Sparkles className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+
+                  <div className="flex flex-wrap items-center gap-4 text-[10px] text-stone-400">
+                    <span className="text-stone-500 font-semibold uppercase">Preference:</span>
+                    <label className="flex items-center gap-1.5 cursor-pointer hover:text-stone-200">
+                      <input
+                        type="radio"
+                        name="newsletterPref"
+                        checked={selectedPreference === 'all'}
+                        onChange={() => setSelectedPreference('all')}
+                        className="accent-[#C5A059]"
+                      />
+                      <span>All Updates</span>
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer hover:text-stone-200">
+                      <input
+                        type="radio"
+                        name="newsletterPref"
+                        checked={selectedPreference === 'menus'}
+                        onChange={() => setSelectedPreference('menus')}
+                        className="accent-[#C5A059]"
+                      />
+                      <span>Seasonal Menus</span>
+                    </label>
+                    <label className="flex items-center gap-1.5 cursor-pointer hover:text-stone-200">
+                      <input
+                        type="radio"
+                        name="newsletterPref"
+                        checked={selectedPreference === 'wine'}
+                        onChange={() => setSelectedPreference('wine')}
+                        className="accent-[#C5A059]"
+                      />
+                      <span>Cellar Allocations</span>
+                    </label>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
         </div>
 
