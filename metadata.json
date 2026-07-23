@@ -1,0 +1,6 @@
+{
+  "name": "Restaurant Web App",
+  "description": "A refined restaurant application with a Hero section, Culinary Story, and Interactive Signature Menu Highlights.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
